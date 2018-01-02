@@ -146,10 +146,6 @@ namespace mHGJumper
             var currIndex = 0;
             var k = 0;
             //OptDistVec is a vector that counts for each '1' in the binary vector the minimum number of 1's needed directly after it for a significant p-value
-            var OptDistVec = new int[Ones+1];
-            for (var i = 0; i < Ones + 1; i++)
-                OptDistVec[i] = Ones; // default max step size (int.maxvalue)
-            for (var i = 0; i < Ones + 1; i++) if (HGTmat[1, i] <= optHGT.Value) OptDistVec[0] = Math.Min(OptDistVec[0], i);
             for (var n = 0; n < binVec.Length; n++)
             {
                 if (binVec[n])
@@ -163,13 +159,7 @@ namespace mHGJumper
                         mHGT = currHGT;
                     }
                     //check distance to optimum
-                    if (optHGT.HasValue && optHGT <= currHGT)
-                    {
-                        for (var i = k; i < Ones+1; i++)
-                            if (HGTmat[n - k + 1, i] <= optHGT.Value)
-                                OptDistVec[k] = Math.Min(OptDistVec[k], i - k);
-                    }
-                    else
+                    if (!(optHGT.HasValue && optHGT <= currHGT))
                     {
                         optHGT = currHGT;
                     }
